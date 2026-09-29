@@ -2,11 +2,19 @@
   "background_color": "#ffffff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "Kerala Lottery Guessing &amp; Result",
+  "name": "Kerala Lottery Guessing & Result",
   "orientation": "any",
-  "scope": "/",
+  "scope": "/Kerala-lottery-results-/",
   "short_name": "Kerala Lottery",
-  "start_url": "/",
-  "theme_color": "#ffffff",
-  "description": "Kerala lottery results and number analysis"
+  "start_url": "/Kerala-lottery-results-/",
+  "theme_color": "#075b3f",
+  "description": "Kerala lottery results and number analysis",
+  "icons": [
+    {
+      "src": "kerala-lottery-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
