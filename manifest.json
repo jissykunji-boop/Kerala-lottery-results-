@@ -1,0 +1,12 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Kerala Lottery Guessing &amp; Result",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Kerala Lottery",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "description": "Kerala lottery results and number analysis"
+}
