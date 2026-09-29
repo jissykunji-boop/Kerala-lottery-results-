@@ -344,3 +344,45 @@ function searchTicket() {
 
 showSection("live");
 </script>
+<script>
+async function viewResults() {
+  const year = document.getElementById("year").value;
+  const out = document.getElementById("archiveResult");
+
+  try {
+    const response = await fetch("results.json");
+    const data = await response.json();
+
+    const results = data.results.filter(r =>
+      r.draw_date.endsWith(year)
+    );
+
+    if (!results.length) {
+      out.innerHTML =
+        "<b>" + year + " Results</b><br><br>" +
+        "ഈ വർഷത്തെ data ഇപ്പോൾ ചേർത്തിട്ടില്ല.";
+      return;
+    }
+
+    let html = "<h3>" + year + " Results</h3>";
+
+    results.forEach(r => {
+      html += "<hr><b>" + r.lottery + " " + r.code + "-" +
+        r.draw_no + "</b><br>" +
+        "Draw Date: " + r.draw_date + "<br><br>";
+
+      for (const [prize, info] of Object.entries(r.prizes)) {
+        html += "<b>" + prize.toUpperCase() + "</b> — ₹" +
+          info.amount.toLocaleString("en-IN") + "<br>" +
+          info.numbers.join(", ") + "<br><br>";
+      }
+    });
+
+    out.innerHTML = html;
+
+  } catch (error) {
+    out.innerHTML =
+      "Results database load ചെയ്യാൻ കഴിഞ്ഞില്ല.";
+  }
+}
+</script>
