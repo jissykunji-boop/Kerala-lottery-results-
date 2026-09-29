@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kerala Lottery Guessing & Result</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#071b16;
+  color:white;
+}
+
+header{
+  background:linear-gradient(135deg,#075b3f,#01261d);
+  text-align:center;
+  padding:25px 15px;
+}
+
+header h1{
+  margin:4px;
+  font-size:25px;
+}
+
+header p{
+  color:#b9ead7;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:15px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.card{
+  border:0;
+  border-radius:18px;
+  padding:20px 10px;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  min-height:110px;
+}
+
+.live{background:#d91e3f;}
+.guess{background:#087ed6;}
+.archive{background:#159447;}
+.search{background:#7338c9;}
+
+section{
+  background:#102a23;
+  border-radius:18px;
+  padding:17px;
+  margin-top:15px;
+}
+
+h2{
+  font-size:19px;
+}
+
+.result{
+  background:#f8f8f8;
+  color:#17231f;
+  border-radius:14px;
+  padding:15px;
+}
+
+.prize{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid #ddd;
+}
+
+input,select{
+  width:100%;
+  padding:13px;
+  margin:5px 0;
+  border-radius:10px;
+  border:1px solid #bbb;
+  font-size:16px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:#087ed6;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  margin-top:7px;
+}
+
+.number{
+  font-size:24px;
+  font-weight:bold;
+  color:#087ed6;
+}
+
+.note{
+  font-size:13px;
+  color:#b8cbc5;
+  line-height:1.5;
+}
+
+nav{
+  position:sticky;
+  bottom:0;
+  background:#06130f;
+  padding:10px;
+  display:flex;
+  justify-content:space-around;
+}
+
+nav button{
+  background:transparent;
+  font-size:13px;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  color:#9db5ad;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>KERALA LOTTERY</h1>
+<h1>GUESSING & RESULT</h1>
+<p>Live Result • Old Results • Number Analysis</p>
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+<button class="card live" onclick="showSection('live')">
+🔴<br>LIVE RESULT
+</button>
+
+<button class="card guess" onclick="showSection('guess')">
+🎯<br>LOTTERY GUESSING
+</button>
+
+<button class="card archive" onclick="showSection('archive')">
+📅<br>2020–2026 RESULTS
+</button>
+
+<button class="card search" onclick="showSection('search')">
+🔎<br>SEARCH TICKET
+</button>
+
+</div>
+
+
+<section id="live">
+
+<h2>🔴 Latest Lottery Result</h2>
+
+<div class="result">
+
+<div class="prize">
+<span>Lottery</span>
+<b>Karunya</b>
+</div>
+
+<div class="prize">
+<span>Draw Date</span>
+<b>—</b>
+</div>
+
+<div class="prize">
+<span>1st Prize</span>
+<b>—</b>
+</div>
+
+<p class="note">
+Live result data will be connected to a verified official source.
+</p>
+
+</div>
+
+</section>
+
+
+<section id="guess">
+
+<h2>🎯 Lottery Guessing & Number Analysis</h2>
+
+<select id="lottery">
+<option>Karunya</option>
+<option>Karunya Plus</option>
+<option>Sthree Sakthi</option>
+<option>Dhanalekshmi</option>
+<option>Bhagyathara</option>
+</select>
+
+<button onclick="generateNumbers()">
+Generate Analysis
+</button>
+
+<div id="guessResult" class="result">
+Choose a lottery and generate numbers.
+</div>
+
+<p class="note">
+⚠️ These are only statistical/entertainment numbers.
+No lottery number can be guaranteed to win.
+</p>
+
+</section>
+
+
+<section id="archive">
+
+<h2>📅 2020–2026 Results</h2>
+
+<select id="year">
+<option>2026</option>
+<option>2025</option>
+<option>2024</option>
+<option>2023</option>
+<option>2022</option>
+<option>2021</option>
+<option>2020</option>
+</select>
+
+<button onclick="viewResults()">
+View Results
+</button>
+
+<div id="archiveResult" class="result">
+Select a year to view results.
+</div>
+
+</section>
+
+
+<section id="search">
