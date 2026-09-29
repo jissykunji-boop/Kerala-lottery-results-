@@ -6,136 +6,129 @@
 <title>Kerala Lottery Guessing & Result</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#071b16;
-  color:white;
+margin:0;
+font-family:Arial,sans-serif;
+background:#071b16;
+color:white;
 }
 
 header{
-  background:linear-gradient(135deg,#075b3f,#01261d);
-  text-align:center;
-  padding:25px 15px;
+background:linear-gradient(135deg,#075b3f,#01261d);
+text-align:center;
+padding:25px 15px;
 }
 
-header h1{
-  margin:4px;
-  font-size:25px;
-}
-
-header p{
-  color:#b9ead7;
-}
+header h1{margin:4px;font-size:25px}
+header p{color:#b9ead7}
 
 .container{
-  max-width:700px;
-  margin:auto;
-  padding:15px;
+max-width:700px;
+margin:auto;
+padding:15px;
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
 }
 
 .card{
-  border:0;
-  border-radius:18px;
-  padding:20px 10px;
-  color:white;
-  font-size:17px;
-  font-weight:bold;
-  min-height:110px;
+border:0;
+border-radius:18px;
+padding:20px 10px;
+color:white;
+font-size:17px;
+font-weight:bold;
+min-height:110px;
 }
 
-.live{background:#d91e3f;}
-.guess{background:#087ed6;}
-.archive{background:#159447;}
-.search{background:#7338c9;}
+.live{background:#d91e3f}
+.guess{background:#087ed6}
+.archive{background:#159447}
+.search{background:#7338c9}
 
 section{
-  background:#102a23;
-  border-radius:18px;
-  padding:17px;
-  margin-top:15px;
+background:#102a23;
+border-radius:18px;
+padding:17px;
+margin-top:15px;
 }
 
-h2{
-  font-size:19px;
-}
+h2{font-size:19px}
 
 .result{
-  background:#f8f8f8;
-  color:#17231f;
-  border-radius:14px;
-  padding:15px;
+background:#f8f8f8;
+color:#17231f;
+border-radius:14px;
+padding:15px;
 }
 
 .prize{
-  display:flex;
-  justify-content:space-between;
-  padding:10px 0;
-  border-bottom:1px solid #ddd;
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid #ddd;
 }
 
 input,select{
-  width:100%;
-  padding:13px;
-  margin:5px 0;
-  border-radius:10px;
-  border:1px solid #bbb;
-  font-size:16px;
+width:100%;
+padding:13px;
+margin:5px 0;
+border-radius:10px;
+border:1px solid #bbb;
+font-size:16px;
 }
 
 button{
-  width:100%;
-  padding:14px;
-  border:0;
-  border-radius:10px;
-  background:#087ed6;
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-  margin-top:7px;
+width:100%;
+padding:14px;
+border:0;
+border-radius:10px;
+background:#087ed6;
+color:white;
+font-size:16px;
+font-weight:bold;
+margin-top:7px;
 }
 
 .number{
-  font-size:24px;
-  font-weight:bold;
-  color:#087ed6;
+font-size:24px;
+font-weight:bold;
+color:#087ed6;
+line-height:1.8;
 }
 
 .note{
-  font-size:13px;
-  color:#b8cbc5;
-  line-height:1.5;
+font-size:13px;
+color:#b8cbc5;
+line-height:1.5;
 }
 
+.official{background:#0b7a4b}
+
 nav{
-  position:sticky;
-  bottom:0;
-  background:#06130f;
-  padding:10px;
-  display:flex;
-  justify-content:space-around;
+position:sticky;
+bottom:0;
+background:#06130f;
+padding:10px;
+display:flex;
+justify-content:space-around;
 }
 
 nav button{
-  background:transparent;
-  font-size:13px;
+background:transparent;
+font-size:13px;
 }
 
 footer{
-  text-align:center;
-  padding:20px;
-  color:#9db5ad;
-  font-size:12px;
+text-align:center;
+padding:20px;
+color:#9db5ad;
+font-size:12px;
 }
 </style>
 </head>
@@ -170,7 +163,6 @@ footer{
 
 </div>
 
-
 <section id="live">
 
 <h2>🔴 Latest Lottery Result</h2>
@@ -179,27 +171,35 @@ footer{
 
 <div class="prize">
 <span>Lottery</span>
-<b>Karunya</b>
+<b>Official Result</b>
 </div>
 
 <div class="prize">
 <span>Draw Date</span>
-<b>—</b>
+<b>Check Official Site</b>
 </div>
 
 <div class="prize">
 <span>1st Prize</span>
-<b>—</b>
+<b>Check Official Site</b>
 </div>
 
+<a href="https://result.keralalotteries.com/"
+target="_blank"
+style="text-decoration:none">
+
+<button class="official">
+📄 OPEN OFFICIAL RESULT
+</button>
+
+</a>
+
 <p class="note">
-Live result data will be connected to a verified official source.
+For the verified latest result, use the official Kerala State Lotteries result website.
 </p>
 
 </div>
-
 </section>
-
 
 <section id="guess">
 
@@ -211,10 +211,12 @@ Live result data will be connected to a verified official source.
 <option>Sthree Sakthi</option>
 <option>Dhanalekshmi</option>
 <option>Bhagyathara</option>
+<option>Suvarna Keralam</option>
+<option>Samrudhi</option>
 </select>
 
 <button onclick="generateNumbers()">
-Generate Analysis
+🎯 Generate Analysis Numbers
 </button>
 
 <div id="guessResult" class="result">
@@ -222,16 +224,15 @@ Choose a lottery and generate numbers.
 </div>
 
 <p class="note">
-⚠️ These are only statistical/entertainment numbers.
+⚠️ These numbers are only statistical/entertainment samples.
 No lottery number can be guaranteed to win.
 </p>
 
 </section>
 
-
 <section id="archive">
 
-<h2>📅 2020–2026 Results</h2>
+<h2>📅 Kerala Lottery Results 2020–2026</h2>
 
 <select id="year">
 <option>2026</option>
@@ -244,14 +245,38 @@ No lottery number can be guaranteed to win.
 </select>
 
 <button onclick="viewResults()">
-View Results
+📅 View Results
 </button>
 
 <div id="archiveResult" class="result">
 Select a year to view results.
 </div>
 
+<p class="note">
+Historical results database will be connected to verified official results.
+</p>
+
 </section>
 
-
 <section id="search">
+
+<h2>🔎 Check Your Ticket</h2>
+
+<input id="ticket" placeholder="Enter ticket number">
+
+<button onclick="searchTicket()">
+🔎 Search Ticket
+</button>
+
+<div id="ticketResult" class="result">
+Enter your ticket number.
+</div>
+
+</section>
+
+<section>
+
+<h2>📄 Official Kerala Lottery Result</h2>
+
+<p class="note">
+Always verify winning numbers with the official Kerala
