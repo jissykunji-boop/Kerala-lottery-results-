@@ -279,3 +279,67 @@ Enter your ticket number.
 
 <p class="note">
 Always verify winning numbers with the official Kerala
+<script>
+function showSection(id) {
+  document.querySelectorAll("section").forEach(section => {
+    section.style.display = "none";
+  });
+
+  const target = document.getElementById(id);
+
+  if (target) {
+    target.style.display = "block";
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
+
+function generateNumbers() {
+  const numbers = [];
+
+  while (numbers.length < 5) {
+    const n = Math.floor(Math.random() * 1000000)
+      .toString()
+      .padStart(6, "0");
+
+    if (!numbers.includes(n)) {
+      numbers.push(n);
+    }
+  }
+
+  document.getElementById("guessResult").innerHTML =
+    "<b>Sample Analysis Numbers</b><br><br>" +
+    "<span class='number'>" +
+    numbers.join(" • ") +
+    "</span>";
+}
+
+function viewResults() {
+  const year = document.getElementById("year").value;
+
+  document.getElementById("archiveResult").innerHTML =
+    "<b>" + year + " Results</b><br><br>" +
+    "Verified historical result data will be added here.<br><br>" +
+    "Please use the official Kerala State Lotteries website for verified results.";
+}
+
+function searchTicket() {
+  const ticket = document.getElementById("ticket").value.trim();
+  const out = document.getElementById("ticketResult");
+
+  if (!ticket) {
+    out.innerHTML = "Please enter a ticket number.";
+    return;
+  }
+
+  out.innerHTML =
+    "<b>Ticket:</b> " + ticket +
+    "<br><br>" +
+    "Automatic ticket verification is not connected yet.<br>" +
+    "Please verify the number on the official Kerala State Lotteries website.";
+}
+
+showSection("live");
+</script>
