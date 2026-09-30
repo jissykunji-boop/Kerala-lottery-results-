@@ -3,7 +3,7 @@ name: Update Kerala Lottery Results
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 11 * * *"
+  - cron: "0,15,30,45 10,11,12 * * *"
 
 permissions:
   contents: write
