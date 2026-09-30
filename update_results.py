@@ -15,21 +15,26 @@ HEADERS = {
 }
 
 
-def get_pdf_text(url):
+def download_pdf(url):
     try:
-        r = requests.get(url, headers=HEADERS, timeout=40)
+        r = requests.get(
+            url,
+            headers=HEADERS,
+            timeout=60
+        )
         r.raise_for_status()
 
         reader = PdfReader(io.BytesIO(r.content))
 
-        pages = []
-        for page in reader.pages:
-            pages.append(page.extract_text() or "")
+        text = []
 
-        return "\n".join(pages)
+        for page in reader.pages:
+            text.append(page.extract_text() or "")
+
+        return "\n".join(text)
 
     except Exception as e:
-        print("PDF error:", url, e)
+        print("PDF ERROR:", url, e)
         return ""
 
 
@@ -37,62 +42,70 @@ def parse_result(text, url):
     clean = " ".join(text.split())
 
     m = re.search(
-        r"LOTTERY NO\.?\s*([A-Z]+-\d+).*?"
-        r"DRAW held on:-\s*(\d{1,2}/\d{1,2}/\d{4})",
+        r"([A-Z]+-\d+)(?:st|nd|rd|th)?\s+DRAW\s+held\s+on:-\s*"
+        r"(\d{1,2}/\d{1,2}/\d{4})",
         clean,
         re.I
     )
 
     if not m:
-        m = re.search(
-            r"([A-Z]+-\d+).*?"
-            r"held on:-\s*(\d{1,2}/\d{1,2}/\d{4})",
+        print("Could not identify lottery:", url)
+        return None
+
+    lottery = m.group(1).upper()
+    date = m.group(2)
+
+    code, number = lottery.split("-")
+
+    prizes = {}
+
+    prize_names = [
+        "1st Prize",
+        "Cons Prize",
+        "2nd Prize",
+        "3rd Prize",
+        "4th Prize",
+        "5th Prize",
+        "6th Prize",
+        "7th Prize",
+        "8th Prize",
+        "9th Prize"
+    ]
+
+    for i, name in enumerate(prize_names):
+        if i + 1 < len(prize_names):
+            next_names = prize_names[i + 1:]
+        else:
+            next_names = []
+
+        pattern = re.escape(name) + r".*?"
+
+        if next_names:
+            pattern += "(?=" + "|".join(
+                re.escape(x) for x in next_names
+            ) + r"|The prize winners)"
+        else:
+            pattern += r"(?=The prize winners|$)"
+
+        match = re.search(
+            pattern,
             clean,
             re.I
         )
 
-    if not m:
-        return None
-
-    code = m.group(1).upper()
-    date = m.group(2)
-
-    number_match = re.search(
-        rf"{re.escape(code)}",
-        clean,
-        re.I
-    )
-
-    draw_no = 0
-
-    if number_match:
-        n = re.search(r"-(\d+)", code)
-        if n:
-            draw_no = int(n.group(1))
-
-    prizes = []
-
-    prize_pattern = re.compile(
-        r"(1st Prize|2nd Prize|3rd Prize|4th Prize|"
-        r"5th Prize|6th Prize|7th Prize|8th Prize|9th Prize)"
-        r".*?(?=(?:1st Prize|2nd Prize|3rd Prize|4th Prize|"
-        r"5th Prize|6th Prize|7th Prize|8th Prize|9th Prize)|"
-        r"The prize winners|Next [A-Z]|$)",
-        re.I
-    )
-
-    for match in prize_pattern.finditer(clean):
-        prizes.append(" ".join(match.group(0).split()))
+        if match:
+            prizes[name] = " ".join(
+                match.group(0).split()
+            )
 
     return {
-        "code": code.split("-")[0],
-        "draw_no": draw_no,
-        "lottery": code,
+        "code": code,
+        "draw_no": int(number),
+        "lottery": lottery,
         "date": date,
-        "title": clean[:250],
         "source": url,
-        "details": clean,
-        "prizes": prizes
+        "prizes": prizes,
+        "details": clean
     }
 
 
@@ -101,41 +114,53 @@ def main():
     response = requests.get(
         RESULTS_URL,
         headers=HEADERS,
-        timeout=40
+        timeout=60
     )
 
     response.raise_for_status()
 
+    html = response.text
+
     soup = BeautifulSoup(
-        response.text,
+        html,
         "html.parser"
     )
 
-    found = []
+    links = []
 
+    # Method 1: normal HTML links
     for a in soup.find_all("a", href=True):
-
         href = a["href"]
 
-        if "viewlotisresult.php" not in href:
-            continue
-
-        url = urljoin(BASE, href)
-
-        row = a.find_parent("tr")
-
-        if row:
-            row_text = " ".join(row.stripped_strings)
-        else:
-            row_text = a.parent.get_text(
-                " ",
-                strip=True
+        if "viewlotisresult.php" in href:
+            links.append(
+                urljoin(BASE + "/", href)
             )
 
-        print("Found:", row_text)
-        print("PDF:", url)
+    # Method 2: raw HTML fallback
+    raw_links = re.findall(
+        r"""(?:href|url)\s*=\s*["']([^"']*viewlotisresult\.php\?drawserial=\d+[^"']*)["']""",
+        html,
+        re.I
+    )
 
-        pdf_text = get_pdf_text(url)
+    for href in raw_links:
+        links.append(
+            urljoin(BASE + "/", href)
+        )
+
+    # Remove duplicates
+    links = list(dict.fromkeys(links))
+
+    print("RESULT LINKS FOUND:", len(links))
+
+    results = []
+
+    for url in links:
+
+        print("Reading:", url)
+
+        pdf_text = download_pdf(url)
 
         if not pdf_text:
             continue
@@ -146,27 +171,38 @@ def main():
         )
 
         if result:
-            found.append(result)
+            results.append(result)
 
+    # Remove duplicate lottery draws
     unique = {}
 
-    for item in found:
+    for item in results:
         key = item["lottery"]
-
-        if key not in unique:
-            unique[key] = item
+        unique[key] = item
 
     results = list(unique.values())
 
-    print("TOTAL RESULTS:", len(results))
+    print("RESULTS FOUND:", len(results))
 
-    if results:
-        latest = results[0]
-    else:
-        latest = {
-            "message": "No result PDF found yet.",
-            "source": RESULTS_URL
-        }
+    if not results:
+        print("NO RESULTS FOUND.")
+        print("Keeping existing results.json.")
+
+        if not Path("results.json").exists():
+            Path("results.json").write_text(
+                "[]",
+                encoding="utf-8"
+            )
+
+        return
+
+    # Newest first
+    results.sort(
+        key=lambda x: x["date"],
+        reverse=True
+    )
+
+    latest = results[0]
 
     Path("latest_result.json").write_text(
         json.dumps(
@@ -186,8 +222,9 @@ def main():
         encoding="utf-8"
     )
 
-    print("Lottery update completed.")
-    print("Latest:", latest)
+    print("SUCCESS")
+    print("Latest:", latest["lottery"])
+    print("Date:", latest["date"])
 
 
 if __name__ == "__main__":
